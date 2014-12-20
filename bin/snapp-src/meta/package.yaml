@@ -1,0 +1,15 @@
+name: etherpad-lite
+vendor: Alexander Sack <asac@canonical.com>
+architecture: amd64
+icon: meta/go.svg
+version: 1.0
+services:
+ - name: etherpad-server
+   description: "snappy etherpad-lite"
+   start: etherpad-lite.start
+binaries:
+ - name: runtime/bin/node
+ - name: start
+ports:
+ required: 80
+

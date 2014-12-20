@@ -1,0 +1,4 @@
+#!/bin/bash
+
+runtime/bin/node sysroot/node_modules/ep_etherpad-lite/node/server.js
+
