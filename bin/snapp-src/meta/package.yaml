@@ -4,12 +4,9 @@ architecture: amd64
 icon: meta/go.svg
 version: 1.0
 services:
- - name: etherpad-server
+ - name: etherpad-lite
    description: "snappy etherpad-lite"
-   start: etherpad-lite.start
-binaries:
- - name: runtime/bin/node
- - name: start
+   start: helper/start
 ports:
  required: 80
 
