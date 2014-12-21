@@ -1,0 +1,14 @@
+#!/bin/sh
+
+runtime=$1
+
+case $runtime in
+  node_v0.10.34-linux-x64)
+     [ "$2" = "pathenv" ] && echo "NODE_PATH" || echo http://nodejs.org/dist/v0.10.34/node-v0.10.34-linux-x64.tar.gz
+     ;;
+  *)
+     echo "runtime $runtime not supported!"
+     exit 1
+     ;;
+
+esac

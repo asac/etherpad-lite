@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd pkg
+export NODE_PATH=../runtime/node/
+../runtime/node/bin/node node_modules/ep_etherpad-lite/node/server.js --settings ../etc/settings.json
+

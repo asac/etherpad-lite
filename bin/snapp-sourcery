@@ -1,0 +1,64 @@
+#/bin/sh
+
+function usage_setup () {
+  echo "snapp-sourcery setup <targetdir> [<srcdir>]"
+}
+
+function usage_addruntime () {
+  echo "snapp-sourcery addruntime <runtime>"
+}
+
+function usage_all () {
+  echo "snapp-sourcery <cmd>
+        cmd:
+          - setup - setup the build sourcery
+       "
+}
+
+function usage_env() {
+  echo "snapp-sourcery env <targetdir>"
+}
+
+cmd=$1
+
+case "$cmd" in
+  setup)
+     builddir=$2
+     srcdir=$3
+     [ -z "$builddir" ] && usage_setup && exit 1
+     [ -z "$srcdir" ] && srcdir=.
+     [ ! -d $builddir ] && mkdir -p $builddir
+     rsync -a $srcdir/meta ${builddir} --delete
+     rsync -a $srcdir/helper ${builddir} --delete
+     echo "#/bin/sh" > $builddir/meta/sourcery.env
+     chmod a+x $builddir/meta/sourcery.env
+     echo "" >> $builddir/meta/sourcery.env
+     echo "SNAPP_SOURCERY=$builddir" >> $builddir/meta/sourcery.env
+     echo "export SNAPP_SOURCERY" >> $builddir/meta/sourcery.env
+     ;;
+  addruntime)
+     [ -z "$SNAPP_SOURCERY" ] && usage_env && exit 1
+     runtime=$2
+     runtime_name=$3
+     [ -z "$runtime" ] && usage_addruntime && exit 1
+     builddir=$SNAPP_SOURCERY
+     metadir=$builddir/meta
+     runtimedir=$builddir/runtime/
+     [ ! -d "$runtimedir/$runtime_name" ] && mkdir -p $runtimedir/$runtime_name
+     url=`snapp-sourcery-resolve $runtime`
+     pathenv=`snapp-sourcery-resolve $runtime pathenv`
+     curl $url | tar -C $runtimedir/$runtime_name --strip=1 -xvz
+     echo "" >> $builddir/meta/sourcery.env
+     echo $pathenv=$runtimedir$runtime_name >> $builddir/meta/sourcery.env
+     echo "export $pathenv" >> $builddir/meta/sourcery.env
+     ;;
+  env)
+     builddir=$2
+     [ -z "$builddir" ] && usage_env && exit 1
+     . $builddir/meta/sourcery.env
+     ;;
+  *)
+     usage_all
+     exit 1
+     ;;
+esac
