@@ -69,7 +69,7 @@ done
 #Does a $settings exist? if no copy the template
 if [ ! -f $settings ]; then
   echo "Copy the settings template to $settings..."
-  cp settings.json.template $settings || exit 1
+  cp src/example/settings.json.template $settings || exit 1
 fi
 
 echo "Ensure that all dependencies are up to date...  If this is the first time you have run Etherpad please be patient."
