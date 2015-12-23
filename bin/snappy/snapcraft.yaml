@@ -11,11 +11,13 @@ binaries:
   server-cli:
     exec: runpad
     description: etherpad-lite cli binary
+    caps: [ network-service ]
 
 services:
   server:
     start: runpad
     description: etherpad-lite service
+    caps: [ network-service ]
 
 parts:
   etherpad-lite:
