@@ -1,0 +1,24 @@
+#/bin/sh
+
+# this script REQUIRES to be run in proper snappy env or with pwd being the top level dir of the install
+
+if test -n "$SNAP_APP_DATA_PATH"; then
+  cd $SNAP_APP_DATA_PATH
+fi
+
+
+test -n "$SNAP_APP_DATA_PATH" && data_path=$SNAP_APP_DATA_PATH/
+test -n "$SNAP_APP_PATH" && app_path=$SNAP_APP_PATH/
+
+#create etc and var dir if non-exist
+test -d "etc" || mkdir -p etc
+test -d "var" || mkdir -p var
+
+# put settings.json template in place if we dont have any settings
+test -f ${data_path}etc/settings.json || cp ${app_path}lib/node_modules/ep_etherpad-lite/example/settings.json.template ${data_path}etc/settings.json
+
+PATH=${app_path}bin/:$PATH
+export PATH
+
+etherpad-lite --settings $PWD/etc/settings.json
+

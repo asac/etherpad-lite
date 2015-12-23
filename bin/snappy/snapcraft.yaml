@@ -1,0 +1,30 @@
+name: etherpad-lite
+version: master
+vendor: Alexander Sack <asac@ubuntu.com>
+summary: etherpad-lite for snappy Ubuntu Core
+description: asacs .snap for etherpad-lite
+  Source is at https://github.com/asac/etherpad-lite@snapcraft
+  Build this using snapcraft => cd bin/snappy; snapcraft all
+icon: icon.png
+
+binaries:
+  server-cli:
+    exec: runpad
+    description: etherpad-lite cli binary
+
+services:
+  server:
+    start: runpad
+    description: etherpad-lite service
+
+parts:
+  etherpad-lite:
+    plugin: nodejs
+    source: ../../src
+  wrapper:
+    plugin: copy
+    files:
+      runpad: runpad
+  topintegration:
+    plugin: make
+    source: .
