@@ -59,10 +59,10 @@ exports.callInit = function (cb) {
     Object.keys(exports.plugins),
     function (plugin_name, cb) {
       var plugin = exports.plugins[plugin_name];
-      fs.stat(path.normalize(path.join(plugin.package.path, ".ep_initialized")), function (err, stats) {
+      fs.stat(path.normalize(".ep_initialized." + plugin_name), function (err, stats) {
         if (err) {
           async.waterfall([
-            function (cb) { fs.writeFile(path.normalize(path.join(plugin.package.path, ".ep_initialized")), 'done', cb); },
+            function (cb) { fs.writeFile(path.normalize(".ep_initialized." + plugin_name), 'done', cb); },
             function (cb) { hooks.aCallAll("init_" + plugin_name, {}, cb); },
             cb,
           ]);
